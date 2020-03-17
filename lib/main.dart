@@ -15,21 +15,28 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
 
-  void _answerQuestion(){
+  void _answerQuestion() {
     setState(() {
       _questionIndex++;
     });
     print('Question Answered');
   }
-  
-  
+
   @override
   Widget build(BuildContext context) {
     var questions = [
-      'What\'s your favourite color ?',
-      'What\'s your favourite food ?',
-      'What\'s your favourite place ?',
-      'What\'s your favourite animal ?',
+      {
+        'questionText': 'What\'s your favourite color ?',
+        'answers': ['red', 'yellow', 'blue', 'Other'],
+      },
+      {
+        'questionText': 'What\'s your favourite food ?',
+        'answers': ['Indian', 'Italian', 'Chinese', 'Other'],
+      },
+      {
+        'questionText': 'What\'s your favourite animal ?',
+        'answers': ['Dog', 'Cat', 'Lion', 'Other'],
+      },
     ];
 
     return MaterialApp(
@@ -39,11 +46,17 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            Question(questions[_questionIndex]),
-            Answer(_answerQuestion),
-            Answer(_answerQuestion),
-            Answer(_answerQuestion),
-          ],  
+            Question(questions[_questionIndex]['questionText']),
+            
+            //below we are transforming the list into list of widgets
+            //map method executes a function which we have to pass as an argument
+            //so below we are passing an anonymous function
+            //... are spread operator
+            //all this is done in lec 33 Mapping List to Widgets
+            ...(questions[_questionIndex]['answers'] as List<String>).map((answer){
+              return Answer(_answerQuestion,answer);     
+            }).toList()
+          ],
         ),
       ),
     );
